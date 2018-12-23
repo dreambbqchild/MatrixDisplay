@@ -3,3 +3,11 @@
 ################################################################################
 
 /.vs/MatrixDisplay/v15
+/MatrixDisplay/bin
+/MatrixDisplay/obj
+/MatrixDisplay/readme/stylesheet.css
+/MatrixDisplay/readme/readme.html
+/MatrixDisplay/led-matrix.h
+/MatrixDisplay/readme/images
+/MatrixDisplay/MatrixDisplay.vcxproj.user
+/MatrixDisplay/MatrixDisplay.vcxproj.filters

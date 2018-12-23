@@ -1,6 +1,8 @@
 #include "MatrixRenderingCanvas.h"
+#include <iostream>
 
 using namespace rgb_matrix;
+using namespace std;
 
 Point MatrixRenderingCanvas::TopTransformer(Point& pt)
 {
@@ -29,11 +31,11 @@ Point MatrixRenderingCanvas::BottomTransformer(Point& pt)
 	return translated;
 }
 
-MatrixRenderingCanvas::MatrixRenderingCanvas() : controller()
+MatrixRenderingCanvas::MatrixRenderingCanvas() : controller(), matrix(nullptr), backBuffer(nullptr)
 {
 	RGBMatrix::Options options;
 	options.hardware_mapping = "adafruit-hat";
-	options.rows = 96;
+	options.rows = 32;
 	options.cols = 64;
 	options.chain_length = 3;
 	options.parallel = 1;
@@ -44,7 +46,17 @@ MatrixRenderingCanvas::MatrixRenderingCanvas() : controller()
 	runtime.gpio_slowdown = 3;
 
 	matrix = CreateMatrixFromOptions(options, runtime);
+	
+	if (!matrix)
+		return;
+	
+	cout << "Created Matrix" << endl;
+
 	backBuffer = matrix->CreateFrameCanvas();
+	if (!backBuffer)
+		return;
+
+	cout << "Created Canvas" << endl;
 }
 
 void MatrixRenderingCanvas::Clear()
@@ -54,11 +66,17 @@ void MatrixRenderingCanvas::Clear()
 
 void MatrixRenderingCanvas::Draw(Point& pt, Color& color) 
 {
+	if (!backBuffer)
+		return;
+
 	backBuffer->SetPixel(pt.X, pt.Y, color.R, color.G, color.B);
 }
 
 void MatrixRenderingCanvas::Refresh() 
 {
+	if (!matrix || !backBuffer)
+		return;
+
 	backBuffer = matrix->SwapOnVSync(backBuffer);
 	backBuffer->Clear();
 }
@@ -70,4 +88,6 @@ MatrixRenderingCanvas::~MatrixRenderingCanvas()
 		matrix->Clear();
 		delete matrix;
 	}
+
+	cout << "Matrix Destructor Ran" << endl;
 }

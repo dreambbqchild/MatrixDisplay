@@ -16,7 +16,7 @@ public:
 	static Point BottomTransformer(Point& pt);
 
 	MatrixRenderingCanvas();
-	IController* GetCanvasController() = 0;
+	IController* GetCanvasController() { return &controller; }
 	uint8_t MaxPanels() { return 3; };
 	void Clear();
 	void Draw(Point& pt, Color& color);

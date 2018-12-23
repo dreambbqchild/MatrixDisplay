@@ -1,5 +1,6 @@
 #pragma once
-#include "ConsoleRenderingCanvas.h"
+//#include "ConsoleRenderingCanvas.h"
+#include "MatrixRenderingCanvas.h"
 #include "Snake.h"
 
 class SnakeGameState : public IGameState
@@ -10,7 +11,8 @@ private:
 	Movement currentMovement;
 	Button currentButtonMask;
 
-	ConsoleRenderingCanvas renderingCanvas;
+	//ConsoleRenderingCanvas renderingCanvas;
+	MatrixRenderingCanvas renderingCanvas;
 	MatrixCanvas canvas;
 	SnakeGameField field;
 	Snake snake;

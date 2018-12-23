@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <iostream>
 
 using namespace std;
 
@@ -21,11 +22,14 @@ void ArcadeController::Control()
 	auto controller = open("/dev/ttyACM0", O_RDONLY);
 	auto isRunning = controller != -1;
 	if (!isRunning)
+	{
+		cout << "Unable to connect to controller" << endl;
 		return;
+	}
 
 	cfsetispeed(&tio, B9600);
 	tcsetattr(controller, TCSANOW, &tio);
-
+	cout << "Controller started" << endl;
 	while (isRunning)
 	{
 		char c = '\0';
@@ -42,7 +46,10 @@ void ArcadeController::Control()
 				buttonMask = stateChar == '-' ? (buttonMask & ~(Button::A)) : (buttonMask | Button::A);
 
 			if (c == 'W' && stateChar == '_')
+			{
 				isRunning = false;
+				cout << "Start Pressed, Exiting" << endl;
+			}
 			else
 				FireButtonChanged(buttonMask);
 		}
