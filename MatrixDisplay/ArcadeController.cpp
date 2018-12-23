@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <iostream>
+#include <errno.h>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ void ArcadeController::Control()
 	auto isRunning = controller != -1;
 	if (!isRunning)
 	{
-		cout << "Unable to connect to controller" << endl;
+		cout << "Unable to connect to controller: " << errno << endl;
 		return;
 	}
 

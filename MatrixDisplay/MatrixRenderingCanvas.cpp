@@ -7,7 +7,7 @@ using namespace std;
 Point MatrixRenderingCanvas::TopTransformer(Point& pt)
 {
 	Point translated = { 0 };
-	translated.X = pt.X + 128;
+	translated.X = pt.X;
 	translated.Y = pt.Y % 32;
 
 	return translated;
@@ -25,7 +25,7 @@ Point MatrixRenderingCanvas::MiddleTransformer(Point& pt)
 Point MatrixRenderingCanvas::BottomTransformer(Point& pt)
 {
 	Point translated = { 0 };
-	translated.X = pt.X;
+	translated.X = pt.X + 128;
 	translated.Y = pt.Y % 32;
 
 	return translated;
@@ -42,7 +42,7 @@ MatrixRenderingCanvas::MatrixRenderingCanvas() : controller(), matrix(nullptr), 
 	options.show_refresh_rate = false;
 
 	RuntimeOptions runtime;
-	runtime.drop_privileges = 1;
+	runtime.drop_privileges = 0; //<-- Do as I say, don't do as I do and I say, don't do this.
 	runtime.gpio_slowdown = 3;
 
 	matrix = CreateMatrixFromOptions(options, runtime);
