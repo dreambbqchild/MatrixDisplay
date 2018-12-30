@@ -22,14 +22,8 @@ void SnakeGameState::Play()
 	});
 	controller->RegisterButtonsChangedCallback([&](Button button) { currentButtonMask = button; });
 
-	//canvas.AddPanel(new MatrixPanel(&renderingCanvas, ConsoleRenderingCanvas::DefaultTransformer));
-	canvas.AddPanel(new MatrixPanel(&renderingCanvas, MatrixRenderingCanvas::TopTransformer));
-	if (renderingCanvas.MaxPanels() > 1)
-	{
-		//Assuming LED matrix. MVP for the win!
-		canvas.AddPanel(new MatrixPanel(&renderingCanvas, MatrixRenderingCanvas::MiddleTransformer));
-		canvas.AddPanel(new MatrixPanel(&renderingCanvas, MatrixRenderingCanvas::BottomTransformer));
-	}
+	renderingCanvas.AddPanelsTo(canvas);
+
 	canvas.BeginRenderLoop(&renderingCanvas);
 	controller->Control();
 	canvas.EndRenderLoop();
@@ -50,7 +44,7 @@ void SnakeGameState::BeginDraw()
 	currentButtonMask = Button::None;
 
 	auto nextPoint = snake.HeadPoint().Move(drawMovement);
-	if (nextPoint.X < 0 || nextPoint.Y < 0 || nextPoint.X >= 64 || nextPoint.Y >= 32 * renderingCanvas.MaxPanels())
+	if (nextPoint.X < 0 || nextPoint.Y < 0 || nextPoint.X >= 64 || nextPoint.Y >= 32 * renderingCanvas.PanelCount())
 	{
 		gameOverText = noob;
 		isGameRunning = false;

@@ -2,6 +2,8 @@
 #include "DrawingStructs.h"
 #include <functional>
 
+class MatrixCanvas;
+
 class IController
 {
 public:
@@ -14,8 +16,8 @@ class IRenderingCanvas
 {
 public:
 	virtual IController* GetCanvasController() = 0;
-	virtual uint8_t MaxPanels() = 0;
-	//Add the panel registry fns.
+	virtual uint8_t PanelCount() = 0;
+	virtual void AddPanelsTo(MatrixCanvas& canvas) = 0;
 	virtual void Clear() = 0;
 	virtual void Draw(Point& pt, Color& color) = 0;
 	virtual void DrawText(Point& pt, Color& color, const char* text) = 0;

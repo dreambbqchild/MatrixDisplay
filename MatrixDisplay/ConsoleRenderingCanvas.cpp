@@ -1,4 +1,6 @@
 #include "ConsoleRenderingCanvas.h"
+#include "MatrixCanvas.h"
+#include "MatrixPanel.h"
 #include <sstream>
 #include <iostream>
 #include <string.h>
@@ -26,6 +28,11 @@ ConsoleRenderingCanvas::ConsoleRenderingCanvas() : controller()
 		cout << "\033[" << (row + 1) << ";64H\033[38;2;255;255;0m|\033[0m";
 
 	cout << "\033[32;0H\033[38;2;255;255;0m----------------------------------------------------------------\033[0m";
+}
+
+void ConsoleRenderingCanvas::AddPanelsTo(MatrixCanvas& canvas)
+{
+	canvas.AddPanel(new MatrixPanel(this, ConsoleRenderingCanvas::DefaultTransformer));
 }
 
 void ConsoleRenderingCanvas::Clear()

@@ -17,7 +17,8 @@ public:
 
 	MatrixRenderingCanvas();
 	IController* GetCanvasController() { return &controller; }
-	uint8_t MaxPanels() { return 3; };
+	uint8_t PanelCount() { return 3; };
+	void AddPanelsTo(MatrixCanvas& canvas);
 	void Clear();
 	void Draw(Point& pt, Color& color);
 	void DrawText(Point& pt, Color& color, const char* text) {}

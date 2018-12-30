@@ -5,7 +5,7 @@ using namespace std;
 
 SnakeGameField::SnakeGameField(IRenderingCanvas* renderingCanvas)
 {
-	auto verticalPixels = 32 * renderingCanvas->MaxPanels();
+	auto verticalPixels = 32 * renderingCanvas->PanelCount();
 	for (auto row = 0; row + MOVEMENT_AMOUNT < verticalPixels; row += MOVEMENT_AMOUNT)
 		for (auto col = 0; col + MOVEMENT_AMOUNT < 64; col += MOVEMENT_AMOUNT)
 			positions.insert(Point(col, row));

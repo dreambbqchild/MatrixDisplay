@@ -1,4 +1,6 @@
 #include "MatrixRenderingCanvas.h"
+#include "MatrixCanvas.h"
+#include "MatrixPanel.h"
 #include <iostream>
 
 using namespace rgb_matrix;
@@ -57,6 +59,13 @@ MatrixRenderingCanvas::MatrixRenderingCanvas() : controller(), matrix(nullptr), 
 		return;
 
 	cout << "Created Canvas" << endl;
+}
+
+void MatrixRenderingCanvas::AddPanelsTo(MatrixCanvas& canvas)
+{
+	canvas.AddPanel(new MatrixPanel(this, MatrixRenderingCanvas::TopTransformer));
+	canvas.AddPanel(new MatrixPanel(this, MatrixRenderingCanvas::MiddleTransformer));
+	canvas.AddPanel(new MatrixPanel(this, MatrixRenderingCanvas::BottomTransformer));
 }
 
 void MatrixRenderingCanvas::Clear()
