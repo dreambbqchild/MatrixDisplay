@@ -2,6 +2,8 @@
 #include "Interfaces.h"
 #include <unordered_set>
 
+#define SNAKE_MOVEMENT 3
+
 class SnakeGameField
 {
 private:

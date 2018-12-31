@@ -6,6 +6,7 @@
 class MatrixCanvas
 {
 private:
+	uint16_t fps;
 	IRootRenderable* root;
 	IRenderingCanvas* renderingCanvas;
 	std::vector<MatrixPanel*> panels;
@@ -15,7 +16,7 @@ private:
 	static void RenderLoop(MatrixCanvas* canvas);
 
 public:
-	MatrixCanvas(IRootRenderable* root) : root(root), runLoop(true), renderingCanvas(nullptr), renderLoop(nullptr) {}
+	MatrixCanvas(uint16_t fps, IRootRenderable* root) : fps(fps), root(root), runLoop(true), renderingCanvas(nullptr), renderLoop(nullptr) {}
 
 	void AddPanel(MatrixPanel* panel) { panels.push_back(panel); }
 	void BeginRenderLoop(IRenderingCanvas* renderingCanvas);

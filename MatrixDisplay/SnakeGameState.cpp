@@ -7,7 +7,7 @@ const char* noob = "Next Out of Bounds";
 const char* soob = "Snake Out of Bounds";
 
 SnakeGameState::SnakeGameState() 
-	: currentMovement(Movement::None), currentButtonMask(Button::None), snake(field), currentPellet(field), field(&renderingCanvas), renderingCanvas(), isGameRunning(true), canvas(this), gameOverText("")
+	: currentMovement(Movement::None), currentButtonMask(Button::None), snake(field), currentPellet(field), field(&renderingCanvas), renderingCanvas(), isGameRunning(true), canvas(3, this), gameOverText("")
 {
 
 }
@@ -43,7 +43,7 @@ void SnakeGameState::BeginDraw()
 	auto buttonState = currentButtonMask;
 	currentButtonMask = Button::None;
 
-	auto nextPoint = snake.HeadPoint().Move(drawMovement);
+	auto nextPoint = snake.HeadPoint().Move(drawMovement, SNAKE_MOVEMENT);
 	if (nextPoint.X < 0 || nextPoint.Y < 0 || nextPoint.X >= 64 || nextPoint.Y >= 32 * renderingCanvas.PanelCount())
 	{
 		gameOverText = noob;

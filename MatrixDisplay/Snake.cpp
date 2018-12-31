@@ -20,7 +20,7 @@ bool Snake::Tongue::Draw(MatrixCanvas& canvas, Movement movement, Point upperLef
 	movement = movement == Movement::None ? Movement::Up : movement;
 	Magick::Image image("3x3", "black");
 	auto pixels = image.getPixels(0, 0, 3, 3);
-	auto pt = upperLeft.Move(movement);
+	auto pt = upperLeft.Move(movement, SNAKE_MOVEMENT);
 	
 	pixels[BOTTOM_MIDDLE].red = TONGUE_RED;
 	if (step >= 1 && step <= 8)

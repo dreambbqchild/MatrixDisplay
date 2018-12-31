@@ -14,7 +14,7 @@ void MatrixCanvas::RenderLoop(MatrixCanvas* canvas)
 			canvas->renderingCanvas->Clear();
 			canvas->root->BeginDraw();
 			canvas->renderingCanvas->Refresh();
-			usleep(1000000 / 3);
+			usleep(1000000 / canvas->fps);
 		}
 	}
 	catch (exception& e)

@@ -36,7 +36,6 @@ private:
 
 	void ForAllSegments(std::function<void(SnakeSegment*)> callback);
 	void ForEachSegmentUntilFalse(std::function<bool(SnakeSegment*)> callback);
-	bool PointForMovement(Movement movement, Point& pt);
 
 public:
 	Snake(SnakeGameField& field);
