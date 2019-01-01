@@ -3,6 +3,7 @@
 #include "MatrixCanvas.h"
 #include <Magick++.h>
 #include <string>
+#include <vector>
 
 class SpriteBase
 {
@@ -12,6 +13,7 @@ protected:
 	void LoadImage(Magick::Image** bmp, std::string fileName);
 
 	virtual Color TransformColor(Color color) { return color; }
+	virtual bool CountPixelHit(Point pxPoint) { return true; }
 	void BaseDraw(Magick::Image* bmp, MatrixCanvas& canvas);
 
 public:
@@ -29,10 +31,8 @@ public:
 
 class Sprite : public SpriteBase
 {
-private:
+protected:
 	Magick::Image* bmp;
-
-	void SetPixel(Point pt, Color color);
 
 public:
 	Sprite(std::string fileName, Rect bounds);
@@ -43,11 +43,10 @@ public:
 template<int TAnimationFrames>
 class AnimatedSprite : public SpriteBase
 {
-private:
+protected:
 	int bmpIndex;
 	Magick::Image* bmps[TAnimationFrames];
 
-protected:
 	void SetFrame(int index, std::string fileName) 
 	{
 		LoadImage(&bmps[index], fileName);

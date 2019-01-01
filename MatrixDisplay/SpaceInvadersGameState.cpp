@@ -39,6 +39,7 @@ void SpaceInvadersGameState::Play()
 
 void SpaceInvadersGameState::BeginDraw()
 {
+	vector<LaserBeam*> activeShots;
 	if ((currentButtonMask & Button::A) == Button::A)
 	{
 		tank.Fire();
@@ -61,16 +62,28 @@ void SpaceInvadersGameState::BeginDraw()
 				if (invadingForce[row][col]->GetIsOnFrontLine())
 					invadingForce[row][col]->TryAttack();
 
+				auto shot = invadingForce[row][col]->GetShot();
+				if (shot->IsLive())
+					activeShots.push_back(shot);
+
 				invadingForce[row][col]->Draw(canvas);
 			}
 		}
 	}
 
-	for (auto index = 0; index < 4; index++)
-		bunkers[index]->Draw(canvas);
-
 	tank.Move(currentMovement);
 	tank.Draw(canvas);
+	tank.AddLiveShotsTo(activeShots);
+
+	for (auto index = 0; index < 4; index++)
+	{
+		for (auto itr = activeShots.begin(); itr != activeShots.end(); itr++)
+		{
+			if (bunkers[index]->HitTest((*itr)->Bounds()))
+				(*itr)->HitATarget();
+		}
+		bunkers[index]->Draw(canvas);
+	}
 }
 
 SpaceInvadersGameState::~SpaceInvadersGameState()

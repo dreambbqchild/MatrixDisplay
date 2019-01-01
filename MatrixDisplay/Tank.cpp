@@ -26,18 +26,25 @@ void Tank::Move(Movement movement)
 		bounds.Point = bounds.Point.Move(movement);
 }
 
-bool Tank::Fire()
+void Tank::Fire()
 {
 	for (auto i = 0; i < 3; i++)
 	{
 		if (!shots[i].IsLive())
 		{
 			shots[i] = LaserBeam(hotPink, Point(bounds.Point.X + 7, 96 - 8), Movement::Up);
-			return true;
+			return;
 		}
 	}
+}
 
-	return false;
+void Tank::AddLiveShotsTo(std::vector<LaserBeam*>& activeShots)
+{
+	for (auto i = 0; i < 3; i++)
+	{
+		if (shots[i].IsLive())
+			activeShots.push_back(&shots[i]);
+	}
 }
 
 Tank::~Tank()

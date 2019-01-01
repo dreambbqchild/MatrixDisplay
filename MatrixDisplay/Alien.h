@@ -16,6 +16,7 @@ public:
 	
 	void Draw(MatrixCanvas& canvas);
 
+	LaserBeam* GetShot() { return &shot; };
 	void SetIsOnFrontLine() { isOnFrontLine = true; }
 	bool GetIsOnFrontLine() { return isOnFrontLine; };
 	

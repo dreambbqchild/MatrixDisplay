@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Random<43> randomAttack;
+Random<103> randomAttack;
 Color white(255, 255, 255);
 
 #define LEFT_FOR_64_COL_MATRIX_WITH_6_ALIENS 5

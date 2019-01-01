@@ -6,6 +6,20 @@ Bunker::Bunker(int index) : Sprite("bunker.png", Rect(Point(LEFT_FOR_64_COL_MATR
 {
 }
 
+bool Bunker::CountPixelHit(Point pxPoint)
+{
+	auto index = pxPoint.Y * bounds.Size.Width + pxPoint.X;
+	auto pixels = bmp->getPixels(0, 0, bounds.Size.Width, bounds.Size.Height);
+	auto countHit = pixels[index].red || pixels[index].green || pixels[index].blue;
+
+	if (countHit)
+	{
+		pixels[index].red = pixels[index].green = pixels[index].blue = ScaleToQuantum(0);
+		bmp->syncPixels();
+	}
+
+	return countHit;
+}
 
 Bunker::~Bunker()
 {

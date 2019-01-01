@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Color black;
+Color black(0, 0, 0);
 
 SpriteBase::SpriteBase(Rect bounds) : bounds(bounds)
 {
@@ -19,16 +19,22 @@ void SpriteBase::LoadImage(Magick::Image** bmp, string fileName)
 
 bool SpriteBase::HitTest(Rect rect)
 {
+	bool hitDetected = false;
 	for (auto row = 0; row < rect.Size.Height; row++)
 	{
-		for (auto col = 0; col < rect.Size.Width; row++)
+		for (auto col = 0; col < rect.Size.Width; col++)
 		{
-			if (bounds.PointIntersects(Point(col + rect.Point.X, row + rect.Point.Y)))
-				return true;
+			auto point = Point(col + rect.Point.X, row + rect.Point.Y);
+			if (bounds.PointIntersects(point))
+			{
+				auto pxPoint = Point(point.X - bounds.Point.X, point.Y - bounds.Point.Y);
+				if (CountPixelHit(pxPoint))
+					hitDetected = true;
+			}
 		}
 	}
 
-	return false;
+	return hitDetected;
 }
 
 void SpriteBase::BaseDraw(Magick::Image* bmp, MatrixCanvas& canvas)
@@ -55,18 +61,6 @@ void SpriteBase::BaseDraw(Magick::Image* bmp, MatrixCanvas& canvas)
 Sprite::Sprite(string fileName, Rect bounds) : SpriteBase(bounds), bmp(nullptr)
 {
 	LoadImage(&bmp, fileName);
-}
-
-void Sprite::SetPixel(Point pt, Color color)
-{
-	auto index = pt.Y * bounds.Size.Width + pt.X;
-
-	auto pixels = bmp->getPixels(0, 0, bounds.Size.Width, bounds.Size.Height);
-	pixels[index].red = ScaleToQuantum(color.R);
-	pixels[index].green = ScaleToQuantum(color.G);
-	pixels[index].blue = ScaleToQuantum(color.B);
-	
-	bmp->syncPixels();
 }
 
 Sprite::~Sprite()

@@ -50,6 +50,8 @@ struct Rect
 	Rect() : Point(), Size() {}
 	Rect(::Point point, ::Size size) : Point(point), Size(size) {}
 	
+	bool IsEmpty() { return Size.Height == 0 && Size.Width == 0; }
+
 	::Point UpperLeft() { return Point; }
 	::Point UpperRight() { return ::Point(Point.X + Size.Width, Point.Y); }
 	::Point LowerLeft() { return ::Point(Point.X, Point.Y + Size.Height); }
@@ -68,5 +70,5 @@ struct Color
 	Color() : R(0), G(0), B(0) {}
 	Color(int r, int g, int b) : R(static_cast<uint8_t>(r)), G(static_cast<uint8_t>(g)), B(static_cast<uint8_t>(b)) {}
 
-	bool operator !=(const Color& right) { return R != right.R && G != right.G && B != right.B; }
+	bool operator !=(const Color& right) { return R != right.R || G != right.G || B != right.B; }
 };
