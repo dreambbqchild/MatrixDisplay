@@ -19,6 +19,7 @@ private:
 	//ConsoleRenderingCanvas renderingCanvas;
 	MatrixCanvas canvas;
 
+	Alien* upperLeft, *lowerRight;
 	Alien* invadingForce[ALIEN_ROWS][ALIEN_COLUMNS];
 	Bunker* bunkers[4];
 	Tank tank;

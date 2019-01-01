@@ -17,6 +17,12 @@ void SpriteBase::LoadImage(Magick::Image** bmp, string fileName)
 	(*bmp)->read(MAKE_PATH(fileName));
 }
 
+bool SpriteBase::PixelHit(Magick::PixelPacket* pixels, Point pxPoint, int& index)
+{
+	index = pxPoint.Y * bounds.Size.Width + pxPoint.X;
+	return pixels[index].red || pixels[index].green || pixels[index].blue;
+}
+
 bool SpriteBase::HitTest(Rect rect)
 {
 	bool hitDetected = false;

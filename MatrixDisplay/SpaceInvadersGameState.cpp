@@ -16,6 +16,9 @@ SpaceInvadersGameState::SpaceInvadersGameState() : animationSteps(24), animation
 		}
 	}
 
+	upperLeft = invadingForce[ALIEN_ROWS - 1][0];
+	lowerRight = invadingForce[0][ALIEN_COLUMNS - 1];
+
 	for (auto index = 0; index < 4; index++)
 		bunkers[index] = new Bunker(index);
 }
@@ -39,7 +42,11 @@ void SpaceInvadersGameState::Play()
 
 void SpaceInvadersGameState::BeginDraw()
 {
+	vector<LaserBeam*> tankShotsAtOutset;
 	vector<LaserBeam*> activeShots;
+
+	tank.AddLiveShotsTo(tankShotsAtOutset);
+
 	if ((currentButtonMask & Button::A) == Button::A)
 	{
 		tank.Fire();
@@ -54,7 +61,7 @@ void SpaceInvadersGameState::BeginDraw()
 	{
 		for (auto col = 0; col < ALIEN_COLUMNS; col++)
 		{
-			if (invadingForce[row][col] != nullptr) 
+			if (!invadingForce[row][col]->IsDead()) 
 			{
 				if (animate)
 					invadingForce[row][col]->NextAnimationFrame();
@@ -62,12 +69,34 @@ void SpaceInvadersGameState::BeginDraw()
 				if (invadingForce[row][col]->GetIsOnFrontLine())
 					invadingForce[row][col]->TryAttack();
 
-				auto shot = invadingForce[row][col]->GetShot();
-				if (shot->IsLive())
-					activeShots.push_back(shot);
+				for (auto itr = tankShotsAtOutset.begin(); itr != tankShotsAtOutset.end(); itr++)
+				{
+					if (!invadingForce[row][col]->HitTest((*itr)->Bounds()))
+						continue;
 
-				invadingForce[row][col]->Draw(canvas);
+					(*itr)->HitATarget();
+					if (!invadingForce[row][col]->GetIsOnFrontLine())
+						break;
+
+					for (auto newFront = row + 1; newFront < ALIEN_ROWS; newFront++)
+					{
+						if (!invadingForce[newFront][col]->IsDead())
+						{
+							invadingForce[newFront][col]->SetIsOnFrontLine();
+							break;
+						}
+					}
+
+					break;
+				}
 			}
+
+			auto shot = invadingForce[row][col]->GetShot();
+			if (shot->IsLive())
+				activeShots.push_back(shot);
+				
+			//still may need to draw the shot or the death image
+			invadingForce[row][col]->Draw(canvas);
 		}
 	}
 

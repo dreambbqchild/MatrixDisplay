@@ -12,6 +12,7 @@ protected:
 
 	void LoadImage(Magick::Image** bmp, std::string fileName);
 
+	bool PixelHit(Magick::PixelPacket* pixels, Point pxPoint, int& index);
 	virtual Color TransformColor(Color color) { return color; }
 	virtual bool CountPixelHit(Point pxPoint) { return true; }
 	void BaseDraw(Magick::Image* bmp, MatrixCanvas& canvas);
@@ -58,7 +59,8 @@ public:
 	{
 		BaseDraw(bmps[bmpIndex], canvas); 
 	}
-	void NextAnimationFrame() { bmpIndex = (bmpIndex + 1) % TAnimationFrames; }
+
+	virtual void NextAnimationFrame() { bmpIndex = (bmpIndex + 1) % TAnimationFrames; }
 
 	virtual ~AnimatedSprite() 
 	{
