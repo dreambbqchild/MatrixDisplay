@@ -9,7 +9,11 @@ SpaceInvadersGameState::SpaceInvadersGameState() : animationSteps(24), animation
 	for (auto row = 0; row < ALIEN_ROWS; row++)
 	{
 		for (auto col = 0; col < ALIEN_COLUMNS; col++)
+		{
 			invadingForce[row][col] = new Alien(invaderImages[row], row, col, invaderColors[row]);
+			if (row == 0)
+				invadingForce[row][col]->SetIsOnFrontLine();
+		}
 	}
 
 	for (auto index = 0; index < 4; index++)
@@ -24,7 +28,7 @@ void SpaceInvadersGameState::Play()
 		if (movement == Movement::Left || movement == Movement::Right || movement == Movement::None)
 			currentMovement = movement;
 	});
-	controller->RegisterButtonsChangedCallback([&](Button button) { /*currentButtonMask = button;*/ });
+	controller->RegisterButtonsChangedCallback([&](Button button) { currentButtonMask = button; });
 
 	renderingCanvas.AddPanelsTo(canvas);
 
@@ -35,8 +39,7 @@ void SpaceInvadersGameState::Play()
 
 void SpaceInvadersGameState::BeginDraw()
 {
-	//take care of any firing.
-	if ((currentButtonMask & Button::A) != Button::None)
+	if ((currentButtonMask & Button::A) == Button::A)
 	{
 		tank.Fire();
 		currentButtonMask = (currentButtonMask & ~Button::A);
@@ -54,6 +57,9 @@ void SpaceInvadersGameState::BeginDraw()
 			{
 				if (animate)
 					invadingForce[row][col]->NextAnimationFrame();
+
+				if (invadingForce[row][col]->GetIsOnFrontLine())
+					invadingForce[row][col]->TryAttack();
 
 				invadingForce[row][col]->Draw(canvas);
 			}

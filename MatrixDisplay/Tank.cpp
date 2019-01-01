@@ -1,5 +1,6 @@
 #include "Tank.h"
 #include "string.h"
+#include <iostream>
 using namespace std;
 
 Color hotPink(248, 24, 148);
@@ -31,7 +32,7 @@ bool Tank::Fire()
 	{
 		if (!shots[i].IsLive())
 		{
-			shots[i] = LaserBeam(hotPink, Point(bounds.Point + 7, 8), Movement::Up);
+			shots[i] = LaserBeam(hotPink, Point(bounds.Point.X + 7, 96 - 8), Movement::Up);
 			return true;
 		}
 	}

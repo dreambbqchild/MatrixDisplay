@@ -1,12 +1,10 @@
 #include "Snake.h"
 #include <Magick++.h>
-#include <random>
+#include "Random.h"
 
 using namespace std;
 
-random_device seed;
-default_random_engine generator(seed());
-uniform_int_distribution<size_t> distribution(0, 6);
+Random<6> randomEyeBlink;
 
 const uint8_t BOTTOM_MIDDLE = 7;
 const uint8_t CENTER_MIDDLE = 4;
@@ -146,7 +144,7 @@ void Snake::Draw(MatrixCanvas& canvas, Movement movement)
 		tongue = nullptr;
 	}
 
-	auto eyesOpen = distribution(generator) != 5;
+	auto eyesOpen = randomEyeBlink.Next() != 5;
 
 	ForAllSegments([&](SnakeSegment* segment)
 	{

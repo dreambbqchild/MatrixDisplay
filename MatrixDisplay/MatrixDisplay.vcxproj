@@ -95,7 +95,16 @@
     <ClCompile Include="SnakeGameField.cpp" />
     <ClCompile Include="SnakeGameState.cpp" />
     <ClCompile Include="SpaceInvadersGameState.cpp" />
-    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Sprite.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x86'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
     <ClCompile Include="Tank.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +121,7 @@
     <ClInclude Include="MatrixCanvas.h" />
     <ClInclude Include="MatrixPanel.h" />
     <ClInclude Include="MatrixRenderingCanvas.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="SnakeGameField.h" />
     <ClInclude Include="SnakeGameState.h" />
@@ -200,6 +210,9 @@
       <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</RemoteCopyFile>
       <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</RemoteCopyFile>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Arcade.ino" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

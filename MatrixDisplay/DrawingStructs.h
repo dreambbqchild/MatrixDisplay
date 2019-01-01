@@ -67,4 +67,6 @@ struct Color
 	uint8_t R, G, B;
 	Color() : R(0), G(0), B(0) {}
 	Color(int r, int g, int b) : R(static_cast<uint8_t>(r)), G(static_cast<uint8_t>(g)), B(static_cast<uint8_t>(b)) {}
+
+	bool operator !=(const Color& right) { return R != right.R && G != right.G && B != right.B; }
 };

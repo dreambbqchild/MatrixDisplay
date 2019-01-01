@@ -5,6 +5,8 @@
 
 using namespace std;
 
+Color black;
+
 SpriteBase::SpriteBase(Rect bounds) : bounds(bounds)
 {
 }
@@ -41,7 +43,10 @@ void SpriteBase::BaseDraw(Magick::Image* bmp, MatrixCanvas& canvas)
 			Color color(ScaleQuantumToChar(pixels[index].red), ScaleQuantumToChar(pixels[index].green), ScaleQuantumToChar(pixels[index].blue));
 			current.X = bounds.Point.X + col;
 			color = TransformColor(color);
-			canvas.Draw(current, color);
+	
+			if(color != black)
+				canvas.Draw(current, color);
+			
 			index++;
 		}
 	}

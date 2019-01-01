@@ -10,16 +10,16 @@ void FoodPellet::Draw(MatrixCanvas& canvas)
 {
 	auto workingPoint = upperLeft;
 
-	workingPoint.X = static_cast<int16_t>(workingPoint.X + 1);
+	workingPoint.X += 1;
 	canvas.Draw(workingPoint, color);
 
-	workingPoint.Y = static_cast<int16_t>(workingPoint.Y + 2);
+	workingPoint.Y += 2;
 	canvas.Draw(workingPoint, color);
 
-	workingPoint.X = static_cast<int16_t>(workingPoint.X - 1);
-	workingPoint.Y = static_cast<int16_t>(workingPoint.Y - 1);
+	workingPoint.X -= 1;
+	workingPoint.Y -= 1;
 	canvas.Draw(workingPoint, color);
 
-	workingPoint.X = static_cast<int16_t>(workingPoint.X + 2);
+	workingPoint.X += 2;
 	canvas.Draw(workingPoint, color);
 }
