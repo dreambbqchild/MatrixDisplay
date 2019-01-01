@@ -211,6 +211,7 @@
       <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</RemoteCopyFile>
       <RemoteCopyFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</RemoteCopyFile>
     </Image>
+    <Image Include="tank_destroyed.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Arcade.ino" />

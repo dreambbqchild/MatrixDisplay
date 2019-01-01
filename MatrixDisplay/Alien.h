@@ -23,6 +23,7 @@ public:
 	void NextAnimationFrame();
 
 	void Draw(MatrixCanvas& canvas);
+	void Move(Movement movement);
 
 	LaserBeam* GetShot() { return &shot; };
 	void SetIsOnFrontLine() { isOnFrontLine = true; }

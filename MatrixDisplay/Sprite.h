@@ -19,9 +19,8 @@ protected:
 
 public:
 	SpriteBase(Rect bounds);
-	Point GetUpperLeft() { return bounds.UpperLeft(); }
-	void SetUpperLeft(Point pt) { bounds.Point = pt; }
 
+	Rect GetBounds() { return bounds; }
 	bool HitTest(Rect bounds);
 
 	virtual void Draw(MatrixCanvas& canvas) = 0;

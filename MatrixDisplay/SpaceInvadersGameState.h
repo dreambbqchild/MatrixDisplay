@@ -13,16 +13,21 @@ class SpaceInvadersGameState : public IGameState
 {
 private:
 	int animationSteps, animationStepCounter;
+	Movement alienMovement;
 	Movement currentMovement;
 	Button currentButtonMask;
 	MatrixRenderingCanvas renderingCanvas;
 	//ConsoleRenderingCanvas renderingCanvas;
 	MatrixCanvas canvas;
 
-	Alien* upperLeft, *lowerRight;
+	Alien* upperLeftAlien, *bottomRightAlien;
 	Alien* invadingForce[ALIEN_ROWS][ALIEN_COLUMNS];
 	Bunker* bunkers[4];
 	Tank tank;
+
+	Alien* FindBoundingAlien(int startingColumn, int offset);
+	void DrawAliens(std::vector<LaserBeam*> tankShotsAtOutset, std::vector<LaserBeam*>& activeShots);
+	void MoveAliens();
 
 public:
 	SpaceInvadersGameState();

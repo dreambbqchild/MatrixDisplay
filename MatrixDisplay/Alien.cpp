@@ -45,6 +45,14 @@ bool Alien::CountPixelHit(Point pxPoint)
 	return countHit;
 }
 
+void Alien::Move(Movement movement)
+{
+	if (!isDeadAndGone && ((movement == Movement::Left && bounds.Point.X > 0) 
+	                    || (movement == Movement::Right && bounds.UpperRight().X < 64) 
+		                || (movement == Movement::Down && bounds.LowerRight().Y < 96)))
+		bounds.Point = bounds.Point.Move(movement);
+}
+
 void Alien::Draw(MatrixCanvas& canvas)
 {
 	if (!isDeadAndGone)
