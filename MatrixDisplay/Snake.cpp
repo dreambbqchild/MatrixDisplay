@@ -43,6 +43,8 @@ bool Snake::Tongue::Draw(MatrixCanvas& canvas, Movement movement, Point upperLef
 	case Movement::Down: image.rotate(180); break;
 	case Movement::Left: image.rotate(-90);  break;
 	case Movement::Right: image.rotate(90);  break;
+	case Movement::None:
+	case Movement::Up: break;
 	}
 	image.syncPixels();
 	pixels = image.getPixels(0, 0, 3, 3);

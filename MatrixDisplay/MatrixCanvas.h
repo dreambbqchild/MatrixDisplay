@@ -16,7 +16,7 @@ private:
 	static void RenderLoop(MatrixCanvas* canvas);
 
 public:
-	MatrixCanvas(uint16_t fps, IRootRenderable* root) : fps(fps), root(root), runLoop(true), renderingCanvas(nullptr), renderLoop(nullptr) {}
+	MatrixCanvas(uint16_t fps, IRootRenderable* root) : fps(fps), root(root), renderingCanvas(nullptr), renderLoop(nullptr), runLoop(true) {}
 
 	void AddPanel(MatrixPanel* panel) { panels.push_back(panel); }
 	void BeginRenderLoop(IRenderingCanvas* renderingCanvas);

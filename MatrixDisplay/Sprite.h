@@ -4,15 +4,15 @@
 #include <Magick++.h>
 #include <string>
 
-#define MAKE_PATH(f) "../../../" + f
-
 class SpriteBase
 {
 protected:
 	Rect bounds;
 
+	void LoadImage(Magick::Image** bmp, std::string fileName);
+
 	virtual Color TransformColor(Color color) { return color; }
-	void BaseDraw(Magick::Image& bmp, MatrixCanvas& canvas);
+	void BaseDraw(Magick::Image* bmp, MatrixCanvas& canvas);
 
 public:
 	SpriteBase(Rect bounds);
@@ -30,33 +30,43 @@ public:
 class Sprite : public SpriteBase
 {
 private:
-	Magick::Image bmp;
+	Magick::Image* bmp;
 
 	void SetPixel(Point pt, Color color);
 
 public:
 	Sprite(std::string fileName, Rect bounds);
 	void Draw(MatrixCanvas& canvas) { BaseDraw(bmp, canvas); }
-	virtual ~Sprite() {}
+	virtual ~Sprite();
 };
 
-template<int16_t TAnimationFrames>
+template<int TAnimationFrames>
 class AnimatedSprite : public SpriteBase
 {
 private:
-	int16_t bmpIndex;
-	Magick::Image bmps[TAnimationFrames];
+	int bmpIndex;
+	Magick::Image* bmps[TAnimationFrames];
 
 protected:
-	void SetFrame(int16_t index, std::string fileName) 
+	void SetFrame(int index, std::string fileName) 
 	{
-		bmps[index] = Magick::Image(MAKE_PATH(fileName));
+		LoadImage(&bmps[index], fileName);
 	}
 
 public:
-	AnimatedSprite(Rect bounds) : SpriteBase(bounds) {}
-	void Draw(MatrixCanvas& canvas) { BaseDraw(bmps[bmpIndex], canvas); }
+	AnimatedSprite(Rect bounds) : SpriteBase(bounds), bmpIndex(0), bmps() {}
+	void Draw(MatrixCanvas& canvas) 
+	{
+		BaseDraw(bmps[bmpIndex], canvas); 
+	}
 	void NextAnimationFrame() { bmpIndex = (bmpIndex + 1) % TAnimationFrames; }
 
-	virtual ~AnimatedSprite() {}
+	virtual ~AnimatedSprite() 
+	{
+		for (auto i = 0; i < TAnimationFrames; i++)
+		{
+			delete bmps[i];
+			bmps[i] = nullptr;
+		}
+	}
 };

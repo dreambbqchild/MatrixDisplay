@@ -1,7 +1,18 @@
 #include "Sprite.h"
+#include <iostream>
+
+#define MAKE_PATH(f) "../../../" + f
+
+using namespace std;
 
 SpriteBase::SpriteBase(Rect bounds) : bounds(bounds)
 {
+}
+
+void SpriteBase::LoadImage(Magick::Image** bmp, string fileName)
+{
+	*bmp = new Magick::Image();
+	(*bmp)->read(MAKE_PATH(fileName));
 }
 
 bool SpriteBase::HitTest(Rect rect)
@@ -18,14 +29,14 @@ bool SpriteBase::HitTest(Rect rect)
 	return false;
 }
 
-void SpriteBase::BaseDraw(Magick::Image& bmp, MatrixCanvas& canvas)
+void SpriteBase::BaseDraw(Magick::Image* bmp, MatrixCanvas& canvas)
 {
-	auto pixels = bmp.getPixels(0, 0, bounds.Size.Width, bounds.Size.Height);
+	auto pixels = bmp->getPixels(0, 0, bounds.Size.Width, bounds.Size.Height);
 	auto index = 0;
-	for (auto row = 0; row < bounds.Size.Width; row++)
+	for (auto row = 0; row < bounds.Size.Height; row++)
 	{
 		Point current = bounds.Point.Y + row;
-		for (auto col = 0; col < bounds.Size.Height; col++)
+		for (auto col = 0; col < bounds.Size.Width; col++)
 		{
 			Color color(ScaleQuantumToChar(pixels[index].red), ScaleQuantumToChar(pixels[index].green), ScaleQuantumToChar(pixels[index].blue));
 			current.X = bounds.Point.X + col;
@@ -36,18 +47,25 @@ void SpriteBase::BaseDraw(Magick::Image& bmp, MatrixCanvas& canvas)
 	}
 }
 
-Sprite::Sprite(std::string fileName, Rect bounds) : SpriteBase(bounds), bmp(MAKE_PATH(fileName))
+Sprite::Sprite(string fileName, Rect bounds) : SpriteBase(bounds), bmp(nullptr)
 {
+	LoadImage(&bmp, fileName);
 }
 
 void Sprite::SetPixel(Point pt, Color color)
 {
 	auto index = pt.Y * bounds.Size.Width + pt.X;
 
-	auto pixels = bmp.getPixels(0, 0, bounds.Size.Width, bounds.Size.Height);
+	auto pixels = bmp->getPixels(0, 0, bounds.Size.Width, bounds.Size.Height);
 	pixels[index].red = ScaleToQuantum(color.R);
 	pixels[index].green = ScaleToQuantum(color.G);
 	pixels[index].blue = ScaleToQuantum(color.B);
 	
-	bmp.syncPixels();
+	bmp->syncPixels();
+}
+
+Sprite::~Sprite()
+{
+	delete bmp;
+	bmp = nullptr;
 }

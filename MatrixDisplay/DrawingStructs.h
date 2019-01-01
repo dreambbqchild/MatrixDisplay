@@ -13,10 +13,10 @@ Button operator ~(Button m);
 
 struct Point
 {
-	int16_t X, Y;
+	int X, Y;
 	Point() : X(0), Y(0) {}
 	Point(const uint32_t& value) : X(value >> 16), Y(value & 0xFFFF) {}
-	Point(int16_t x, int16_t y) : X(x), Y(y) {}
+	Point(int x, int y) : X(x), Y(y) {}
 
 	Point Move(Movement movement, int8_t movementAmount = 1)
 	{
@@ -27,6 +27,7 @@ struct Point
 		case Movement::Down: result.Y += movementAmount; break;
 		case Movement::Left: result.X -= movementAmount; break;
 		case Movement::Right: result.X += movementAmount; break;
+		case Movement::None: break;
 		}
 		return result;
 	}
@@ -37,9 +38,9 @@ struct Point
 
 struct Size
 {
-	int16_t Width, Height;
+	int Width, Height;
 	Size() : Width(0), Height(0) {}
-	Size(int16_t width, int16_t height) : Width(width), Height(height) {}
+	Size(int width, int height) : Width(width), Height(height) {}
 };
 
 struct Rect 
@@ -65,5 +66,5 @@ struct Color
 {
 	uint8_t R, G, B;
 	Color() : R(0), G(0), B(0) {}
-	Color(uint8_t R, uint8_t G, uint8_t B) : R(R), G(G), B(B) {}
+	Color(int r, int g, int b) : R(static_cast<uint8_t>(r)), G(static_cast<uint8_t>(g)), B(static_cast<uint8_t>(b)) {}
 };

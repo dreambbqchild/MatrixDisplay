@@ -5,7 +5,7 @@ class Bunker : public Sprite
 {
 
 public:
-	Bunker(Point upperLeft);
+	Bunker(int index);
 	virtual ~Bunker();
 };
 

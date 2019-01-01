@@ -7,7 +7,7 @@ const char* noob = "Next Out of Bounds";
 const char* soob = "Snake Out of Bounds";
 
 SnakeGameState::SnakeGameState() 
-	: currentMovement(Movement::None), currentButtonMask(Button::None), snake(field), currentPellet(field), field(&renderingCanvas), renderingCanvas(), isGameRunning(true), canvas(3, this), gameOverText("")
+	: gameOverText(""), isGameRunning(true), currentMovement(Movement::None), currentButtonMask(Button::None), renderingCanvas(), canvas(3, this), field(&renderingCanvas), snake(field), currentPellet(field)
 {
 
 }

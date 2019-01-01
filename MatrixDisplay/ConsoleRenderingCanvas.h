@@ -13,7 +13,7 @@ public:
 	static Point DefaultTransformer(Point& pt);
 
 	ConsoleRenderingCanvas();
-	uint8_t PanelCount() { return 1; }
+	uint8_t PanelCount() { return 3; }
 	void AddPanelsTo(MatrixCanvas& canvas);
 	IController* GetCanvasController() { return &controller; }
 	void Clear();

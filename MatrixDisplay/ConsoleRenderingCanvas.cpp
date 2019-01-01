@@ -15,7 +15,7 @@ struct Cell
 	Color color;
 };
 
-Cell matrix[32][64] = { 0 };
+Cell matrix[96][64] = { 0 };
 
 Point ConsoleRenderingCanvas::DefaultTransformer(Point& pt) { return pt; }
 
@@ -24,7 +24,7 @@ ConsoleRenderingCanvas::ConsoleRenderingCanvas() : controller()
 	cout << "\033[2J";
 	cout.flush();
 
-	for (auto row = 0; row < 32; row++)
+	for (auto row = 0; row < 96; row++)
 		cout << "\033[" << (row + 1) << ";64H\033[38;2;255;255;0m|\033[0m";
 
 	cout << "\033[32;0H\033[38;2;255;255;0m----------------------------------------------------------------\033[0m";
@@ -33,11 +33,13 @@ ConsoleRenderingCanvas::ConsoleRenderingCanvas() : controller()
 void ConsoleRenderingCanvas::AddPanelsTo(MatrixCanvas& canvas)
 {
 	canvas.AddPanel(new MatrixPanel(this, ConsoleRenderingCanvas::DefaultTransformer));
+	canvas.AddPanel(new MatrixPanel(this, ConsoleRenderingCanvas::DefaultTransformer));
+	canvas.AddPanel(new MatrixPanel(this, ConsoleRenderingCanvas::DefaultTransformer));
 }
 
 void ConsoleRenderingCanvas::Clear()
 {
-	for (auto row = 0; row < 32; row++)
+	for (auto row = 0; row < 96; row++)
 	for (auto col = 0; col < 64; col++)
 	{
 		matrix[row][col].WasVisited = false;
@@ -57,7 +59,7 @@ void ConsoleRenderingCanvas::Draw(Point& pt, Color& color)
 void ConsoleRenderingCanvas::DrawText(Point& pt, Color& color, const char* text)
 {
 	auto length = strlen(text);
-	for (auto i = 0; i < length; i++)
+	for (size_t i = 0; i < length; i++)
 	{
 		auto x = pt.X + i;
 		auto currentColor = matrix[pt.Y][x].color;
@@ -70,7 +72,7 @@ void ConsoleRenderingCanvas::DrawText(Point& pt, Color& color, const char* text)
 
 void ConsoleRenderingCanvas::Refresh()
 {
-	for (auto row = 0; row < 32; row++)
+	for (auto row = 0; row < 96; row++)
 	for (auto col = 0; col < 64; col++)
 	{
 		auto px = matrix[row][col].color;

@@ -5,7 +5,7 @@ class Tank : public Sprite
 {
 
 public:
-	Tank(Point upperLeft);
+	Tank();
 	virtual ~Tank();
 };
 

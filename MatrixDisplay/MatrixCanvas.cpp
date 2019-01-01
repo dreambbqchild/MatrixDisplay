@@ -34,14 +34,14 @@ void MatrixCanvas::BeginRenderLoop(IRenderingCanvas* renderingCanvas)
 
 void MatrixCanvas::Draw(Point& pt, Color& px)
 {
-	auto panelIndex = pt.Y / 32;
+	auto panelIndex = static_cast<size_t>(pt.Y / 32);
 	if(panelIndex < panels.size())
 		panels.at(panelIndex)->Draw(pt, px);
 }
 
 void MatrixCanvas::DrawText(Point& pt, Color& px, const char* text)
 {
-	auto panelIndex = pt.Y / 32;
+	auto panelIndex = static_cast<size_t>(pt.Y / 32);
 	if (panelIndex < panels.size())
 		panels.at(panelIndex)->DrawText(pt, px, text);
 }

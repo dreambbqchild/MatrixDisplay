@@ -8,7 +8,7 @@ private:
 	Color alienColor;
 
 public:
-	Alien(std::string fileName, Point upperLeft, Color alienColor);
+	Alien(std::string fileName, int rowFromTop, int colFromLeft, Color alienColor);
 	Color TransformColor(Color color);
 	virtual ~Alien();
 };
