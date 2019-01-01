@@ -12,6 +12,9 @@
 class SpaceInvadersGameState : public IGameState
 {
 private:
+	int animationSteps, animationStepCounter;
+	Movement currentMovement;
+	Button currentButtonMask;
 	MatrixRenderingCanvas renderingCanvas;
 	//ConsoleRenderingCanvas renderingCanvas;
 	MatrixCanvas canvas;

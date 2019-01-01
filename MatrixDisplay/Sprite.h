@@ -36,7 +36,7 @@ private:
 
 public:
 	Sprite(std::string fileName, Rect bounds);
-	void Draw(MatrixCanvas& canvas) { BaseDraw(bmp, canvas); }
+	virtual void Draw(MatrixCanvas& canvas) { BaseDraw(bmp, canvas); }
 	virtual ~Sprite();
 };
 
@@ -55,7 +55,7 @@ protected:
 
 public:
 	AnimatedSprite(Rect bounds) : SpriteBase(bounds), bmpIndex(0), bmps() {}
-	void Draw(MatrixCanvas& canvas) 
+	virtual void Draw(MatrixCanvas& canvas)
 	{
 		BaseDraw(bmps[bmpIndex], canvas); 
 	}

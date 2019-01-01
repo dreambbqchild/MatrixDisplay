@@ -1,6 +1,7 @@
 #include "ArcadeController.h"
 #include <algorithm>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -19,7 +20,10 @@ void ArcadeController::Control()
 	tio.c_cflag = CS8 | CREAD | CLOCAL;
 	tio.c_cc[VMIN] = 1;
 
-	auto buttonMask = Button::None;
+	char state[32] = { 0 };
+	auto stateIndex = 0;
+	auto lastReportedButtonState = Button::None;
+	auto lastReportedMovement = Movement::None;
 	auto controller = open("/dev/ttyACM0", O_RDONLY);
 	auto isRunning = controller != -1;
 	if (!isRunning)
@@ -33,50 +37,58 @@ void ArcadeController::Control()
 	cout << "Controller started" << endl;
 	while (isRunning)
 	{
-		char c = '\0';
-		read(controller, &c, 1);
-		if (c == 'B' || c == 'G' || c == 'W')
+		Button currentButtons = Button::None;
+		Movement currentMovement = Movement::None;
+		
+		memset(state, 0x0, sizeof(state));
+		stateIndex = 0;
+		do
 		{
-			char stateChar = '\0';
-			read(controller, &stateChar, 1);
-			
-			if (c == 'B')
-				buttonMask = stateChar == '-' ? (buttonMask & ~(Button::B)) : (buttonMask | Button::B);
+			read(controller, &state[stateIndex], 1);
+		} while (state[stateIndex++] != '\n');
 
-			if (c == 'G')
-				buttonMask = stateChar == '-' ? (buttonMask & ~(Button::A)) : (buttonMask | Button::A);
-
-			if (c == 'W' && stateChar == '_')
-			{
-				isRunning = false;
-				cout << "Start Pressed, Exiting" << endl;
-			}
-			else
-				FireButtonChanged(buttonMask);
-		}
-		else
+		for (auto i = 0; i < stateIndex; i++)
 		{
-			char joystickState[8] = { 0 };
-			auto movement = Movement::None;
-
-			//VMIN = 1, rather than fiddle just read byte by byte.
-			joystickState[0] = c;
-			for(auto i = 0; i < 7; i++)
-				read(controller, &joystickState[1 + i], 1);
-	
-			for(auto i = 1; i < 8; i += 2)
+			auto c = state[i];
+			switch (c)
 			{
-				auto stateChar = joystickState[i];
-				switch (joystickState[i - 1])
+			case 'B': currentButtons = currentButtons | Button::B;  break;
+			case 'G': currentButtons = currentButtons | Button::A;  break;
+			case 'W': 
 				{
-				case 'u': movement = stateChar == '-' ? (movement & ~(Movement::Up)) : (movement | Movement::Up); break;
-				case 'd': movement = stateChar == '-' ? (movement & ~(Movement::Down)) : (movement | Movement::Down); break;
-				case 'l': movement = stateChar == '-' ? (movement & ~(Movement::Left)) : (movement | Movement::Left); break;
-				case 'r': movement = stateChar == '-' ? (movement & ~(Movement::Right)) : (movement | Movement::Right); break;
+					isRunning = false;
+					cout << "Start Pressed, Exiting" << endl;
+					break;
 				}
+			case 'U': currentMovement = currentMovement | Movement::Up; break;
+			case 'D': currentMovement = currentMovement | Movement::Down; break;
+			case 'L': currentMovement = currentMovement | Movement::Left; break;
+			case 'R': currentMovement = currentMovement | Movement::Right; break;
 			}
+		}
 
-			FireMovementChanged(movement);
+		if (currentMovement != lastReportedMovement)
+		{
+			cout << ((currentMovement & Movement::Up) != Movement::None ? "Up " : "")
+				<< ((currentMovement & Movement::Down) != Movement::None ? "Down " : "")
+				<< ((currentMovement & Movement::Left) != Movement::None ? "Left " : "")
+				<< ((currentMovement & Movement::Right) != Movement::None ? "Right " : "")
+				<< (currentMovement == Movement::None ? "None" : "")
+				<< endl;
+
+			FireMovementChanged(currentMovement);
+			lastReportedMovement = currentMovement;
+		}
+
+		if (currentButtons != lastReportedButtonState)
+		{
+			cout << ((currentButtons & Button::B) != Button::None ? "B " : "")
+				<< ((currentButtons & Button::A) != Button::None ? "A " : "")
+				<< (currentButtons == Button::None ? "None " : "")
+				<< endl;
+
+			FireButtonChanged(currentButtons);
+			lastReportedButtonState = currentButtons;
 		}
 	}
 	close(controller);
