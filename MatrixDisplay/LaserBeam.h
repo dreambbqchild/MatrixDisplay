@@ -14,7 +14,7 @@ public:
 	LaserBeam() : color(), lastPointDrawn(0, 0), point(0, 0), movement(Movement::None) {}
 	LaserBeam(Color color, Point origin, Movement movement);
 	
-	Rect Bounds() { return Rect(lastPointDrawn, Size(1, 4)); }
+	Rect Bounds() { return movement != Movement::None ? Rect(lastPointDrawn, Size(1, 4)) : Rect(); }
 	void HitATarget() { movement = Movement::None; }
 	bool IsLive() { return movement != Movement::None; }
 	

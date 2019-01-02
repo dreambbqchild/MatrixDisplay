@@ -214,6 +214,7 @@
     <Image Include="tank_destroyed.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="Arcade.ino" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
